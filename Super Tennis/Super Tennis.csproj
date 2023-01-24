@@ -65,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -78,6 +79,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\470928__gttorre__tennisball.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\220173__gameaudio__spacey-1up-power-up.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\218318__splicesound__referee-whistle-blow-gymnasium.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\78508__joedeshon__referee_whistle_01.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

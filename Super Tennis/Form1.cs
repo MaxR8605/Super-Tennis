@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace Super_Tennis
 {
@@ -46,6 +47,10 @@ namespace Super_Tennis
         List<int> powerupXSpeed = new List<int>();
         List<int> powerupYSpeed = new List<int>();
 
+        SoundPlayer hit = new SoundPlayer(Properties.Resources.hit);
+        SoundPlayer winSound = new SoundPlayer(Properties.Resources.point);
+        SoundPlayer whistle = new SoundPlayer(Properties.Resources.whistle);
+
         int page = 0;
 
         int p1XSpeed = 0;
@@ -61,6 +66,7 @@ namespace Super_Tennis
         string ballSide = null;
         int p1Score = 0;
         int p2Score = 0;
+        int maxScore;
 
         int ballDelayTimer = 0;
         int ballDelayTimer2 = 0;
@@ -112,7 +118,7 @@ namespace Super_Tennis
                 e.Graphics.DrawString("ENNIS", supertennisSmall, lime, 490, 194);
                 e.Graphics.FillRectangle(lime, 470, 169, 220, 29);
             }
-            else if (page == 1)
+            else if (page == 1 || page == 2)
             {
                 e.Graphics.FillRectangle(black, net);
                 e.Graphics.FillRectangle(green, ground1);
@@ -176,6 +182,46 @@ namespace Super_Tennis
 
                 e.Graphics.DrawString($"{p1Score}", supertennisSmall, p1colour, 30, 30);
                 e.Graphics.DrawString($"{p2Score}", supertennisSmall, p2colour, Width - 30 - Convert.ToString(p2Score).Length * 55, 30);
+                
+                if (ballDelayTimer2 > 0 && ballSide != null)
+                {
+                    if (ballXSpeed > 0)
+                    {
+                        if (p1Score == 0 && p2Score == 0)
+                        {
+                            e.Graphics.DrawString("Orange Serve!", supertennisSmall, black, 215, 150);
+                        }
+                        else
+                        {
+                            e.Graphics.DrawString("Point for Orange!", supertennisSmall, black, 115, 150);
+                        }
+                    }
+                    else
+                    {
+                        if (p1Score == 0 && p2Score == 0)
+                        {
+                            e.Graphics.DrawString("Purple Serve!", supertennisSmall, black, 200, 150);
+                        }
+                        else
+                        {
+                            e.Graphics.DrawString("Point for Purple!", supertennisSmall, black, 100, 150);
+                        }
+                    }
+                }
+            }
+            if (page == 2)
+            {
+                if (p1Score > p2Score)
+                {
+                    e.Graphics.FillRectangle(p1colour, 100, 100, 600, 320);
+                    e.Graphics.DrawString("Purple Team Wins!", supertennisSmall, black, 115, 150);
+
+                }
+                else
+                {
+                    e.Graphics.FillRectangle(p2colour, 100, 100, 600, 320);
+                    e.Graphics.DrawString("Orange Team Wins!", supertennisSmall, black, 100, 150);
+                }
             }
         }
 
@@ -337,12 +383,17 @@ namespace Super_Tennis
 
                 // Move ball
 
+                if (ballSide == null)
+                {
+                    Serve(null);
+                }
+
                 if (ballDelayTimer2 == 0)
                 {
                     ballYSpeed++;
                 }
 
-                if (ball.X > 384)
+                if (ball.X > 385)
                 {
                     if (ballSide == "p1")
                     {
@@ -350,12 +401,20 @@ namespace Super_Tennis
                     }
                     ballSide = "p2";
                 }
-                else
+                else if (ball.X < 385)
                 {
                     if (ballSide == "p2")
                     {
                         bounces = 0;
                     }
+                    ballSide = "p1";
+                }
+                else if (ballXSpeed > 0)
+                {
+                    ballSide = "p2";
+                }
+                else if (ballXSpeed < 0)
+                {
                     ballSide = "p1";
                 }
 
@@ -481,14 +540,71 @@ namespace Super_Tennis
                     powerupXSpeed.Add(rand.Next(-3, 4));
                 }
 
-                Refresh();
+                for (int i = 0; i < powerups.Count; i++)
+                {
+                    int x = powerups[i].X;
+                    int y = powerups[i].Y;
+                    powerups.RemoveAt(i);
+                    powerups.Insert(i, new Rectangle(x + powerupXSpeed[i], y + powerupYSpeed[i], 20, 20));
+                    if (powerups[i].IntersectsWith(ground1) || powerups[i].IntersectsWith(ground2) || powerups[i].IntersectsWith(ground3) || powerups[i].IntersectsWith(ground4) || powerups[i].IntersectsWith(ground5) || powerups[i].IntersectsWith(ground6))
+                    {
+                        powerupYSpeed[i] = rand.Next(-20, -9);
+                        powerupXSpeed[i] = rand.Next(-3, 4);
+                    }
+                    powerupYSpeed[i]++;
+                }
+
             }
+
+            // Buttons
+
+            if (page == 2)
+            {
+                playAgainButton.Visible = true;
+                playAgainButton.Enabled = true;
+                menuButton.Visible = true;
+                menuButton.Enabled = true;
+            }
+            else
+            {
+                playAgainButton.Visible = false;
+                playAgainButton.Enabled = false;
+                menuButton.Visible = false;
+                menuButton.Enabled = false;
+
+                if (page == 0)
+                {
+                    playButton.Visible = true;
+                    playButton.Enabled = true;
+                    maxPoints.Visible = true;
+                    pointsInput.Visible = true;
+                    pointsInput.Enabled = true;
+                }
+            }
+            Refresh();
         }
 
         private void playButton_Click(object sender, EventArgs e)
         {
             playButton.Visible = false;
             playButton.Enabled = false;
+            maxPoints.Visible = false;
+            pointsInput.Visible = false;
+            pointsInput.Enabled = false;
+            ballSide = null;
+
+            try
+            {
+                maxScore = Convert.ToInt16(pointsInput.Text);
+                if (maxScore < 1)
+                {
+                    maxScore = 5;
+                }
+            }
+            catch
+            {
+                maxScore = 5;
+            }
 
             page = 1;
         }
@@ -707,6 +823,7 @@ namespace Super_Tennis
             if (ball.IntersectsWith(player))
             {
                 bounces = 1;
+                hit.Play();
                 if (ballXSpeed > 0)
                 {
                     ballXSpeed--;
@@ -772,6 +889,7 @@ namespace Super_Tennis
             ballYSpeed = -10;
             bounces = 0;
             powerupTimer = rand.Next(700, 1301);
+            whistle.Play();
 
             player1.X = 150;
             player1.Y = 350;
@@ -781,16 +899,39 @@ namespace Super_Tennis
             p1YSpeed = 0;
             p2XSpeed = 0;
             p2YSpeed = 0;
+
             if (winner == "p1")
             {
                 ballXSpeed = -6;
                 p1Score++;
             }
-            else
+            else if (winner == "p2")
             {
                 ballXSpeed = 6;
                 p2Score++;
             }
+            else
+            {
+                ballXSpeed = rand.Next(0, 2) * 12 - 6;
+                p1Score = 0;
+                p2Score = 0;
+            }
+            if (p1Score == maxScore || p2Score == maxScore)
+            {
+                winSound.Play();
+                page = 2;
+            }
+        }
+
+        private void playAgainButton_Click(object sender, EventArgs e)
+        {
+            ballSide = null;
+            page = 1;
+        }
+
+        private void menuButton_Click(object sender, EventArgs e)
+        {
+            page = 0;
         }
     }
 }
