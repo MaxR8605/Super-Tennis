@@ -50,6 +50,7 @@ namespace Super_Tennis
         SoundPlayer hit = new SoundPlayer(Properties.Resources.hit);
         SoundPlayer winSound = new SoundPlayer(Properties.Resources.point);
         SoundPlayer whistle = new SoundPlayer(Properties.Resources.whistle);
+        SoundPlayer bounce = new SoundPlayer(Properties.Resources.bounce);
 
         int page = 0;
 
@@ -412,10 +413,12 @@ namespace Super_Tennis
                 else if (ballXSpeed > 0)
                 {
                     ballSide = "p2";
+                    bounces = 0;
                 }
                 else if (ballXSpeed < 0)
                 {
                     ballSide = "p1";
+                    bounces = 0;
                 }
 
                 if (ballYSpeed < -22)
@@ -795,6 +798,7 @@ namespace Super_Tennis
                 bounces++;
                 if (bounces < 2)
                 {
+                    bounce.Play();
                     if (ball.Y + ball.Height < (ground.Y + 2))
                     {
                         ballYSpeed--;

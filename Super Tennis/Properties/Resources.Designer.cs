@@ -63,6 +63,15 @@ namespace Super_Tennis.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream bounce {
+            get {
+                return ResourceManager.GetStream("bounce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream hit {
             get {
                 return ResourceManager.GetStream("hit", resourceCulture);

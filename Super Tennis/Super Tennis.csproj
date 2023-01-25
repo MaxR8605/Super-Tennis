@@ -92,5 +92,8 @@
   <ItemGroup>
     <None Include="Resources\78508__joedeshon__referee_whistle_01.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\51461__andrenascimento__basket_ball_02_bounce.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
