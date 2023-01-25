@@ -846,7 +846,7 @@ namespace Super_Tennis
                 {
                     ballYSpeed++;
                 }
-                ballYSpeed *= -1;
+                ballYSpeed *= -1;//
 
                 ballXSpeed += pXSpeed;
                 ballYSpeed += pYSpeed;
