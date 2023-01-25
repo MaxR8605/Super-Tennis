@@ -96,6 +96,8 @@ namespace Super_Tennis
         {
             if (page == 0)
             {
+                // Title screen
+
                 e.Graphics.FillRectangle(white, 100, 60, Width - 200, 190);
                 e.Graphics.FillRectangle(white, 130, 30, Width - 260, 250);
 
@@ -121,6 +123,8 @@ namespace Super_Tennis
             }
             else if (page == 1 || page == 2)
             {
+                // Game
+
                 e.Graphics.FillRectangle(black, net);
                 e.Graphics.FillRectangle(green, ground1);
                 e.Graphics.FillRectangle(green, ground2);
@@ -177,6 +181,14 @@ namespace Super_Tennis
                 e.Graphics.FillRectangle(p2colour, player2.X - 10, player2.Y + 5, 4, 15);
                 e.Graphics.DrawEllipse(p2colourPen, player2.X - 15, player2.Y - 10, 12, 15);
 
+                if (ballSide == "p1")
+                {
+                    e.Graphics.FillEllipse(p1colour, ball.X - 2, ball.Y - 2, ball.Width + 4, ball.Height + 4);
+                }
+                else if (ballSide == "p2")
+                {
+                    e.Graphics.FillEllipse(p2colour, ball.X - 2, ball.Y - 2, ball.Width + 4, ball.Height + 4);
+                }
                 e.Graphics.FillEllipse(tennisballgreen, ball);
                 e.Graphics.DrawArc(tennisballline, ball.X - 20, ball.Y, ball.Width, ball.Height, -50, 100);
                 e.Graphics.DrawArc(tennisballline, ball.X + 20, ball.Y, ball.Width, ball.Height, 130, 100);
@@ -194,7 +206,7 @@ namespace Super_Tennis
                         }
                         else
                         {
-                            e.Graphics.DrawString("Point for Orange!", supertennisSmall, black, 115, 150);
+                            e.Graphics.DrawString("Point for Orange!", supertennisSmall, black, 165, 150);
                         }
                     }
                     else
@@ -205,7 +217,7 @@ namespace Super_Tennis
                         }
                         else
                         {
-                            e.Graphics.DrawString("Point for Purple!", supertennisSmall, black, 100, 150);
+                            e.Graphics.DrawString("Point for Purple!", supertennisSmall, black, 150, 150);
                         }
                     }
                 }
@@ -226,7 +238,7 @@ namespace Super_Tennis
             }
         }
 
-        private void gameTimer_Tick(object sender, EventArgs e)
+        private void GameTimer_Tick(object sender, EventArgs e)
         {
             if (page == 1)
             {
@@ -587,7 +599,7 @@ namespace Super_Tennis
             Refresh();
         }
 
-        private void playButton_Click(object sender, EventArgs e)
+        private void PlayButton_Click(object sender, EventArgs e)
         {
             playButton.Visible = false;
             playButton.Enabled = false;
@@ -796,7 +808,7 @@ namespace Super_Tennis
             if (ball.IntersectsWith(ground))
             {
                 bounces++;
-                if (bounces < 2)
+                if (bounces < 2 || ballDelayTimer > 0)
                 {
                     bounce.Play();
                     if (ball.Y + ball.Height < (ground.Y + 2))
@@ -846,7 +858,7 @@ namespace Super_Tennis
                 {
                     ballYSpeed++;
                 }
-                ballYSpeed *= -1;//
+                ballYSpeed *= -1;
 
                 ballXSpeed += pXSpeed;
                 ballYSpeed += pYSpeed;
@@ -927,15 +939,20 @@ namespace Super_Tennis
             }
         }
 
-        private void playAgainButton_Click(object sender, EventArgs e)
+        private void PlayAgainButton_Click(object sender, EventArgs e)
         {
             ballSide = null;
             page = 1;
         }
 
-        private void menuButton_Click(object sender, EventArgs e)
+        private void MenuButton_Click(object sender, EventArgs e)
         {
             page = 0;
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

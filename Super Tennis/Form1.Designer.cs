@@ -36,13 +36,14 @@
             this.pointsInput = new System.Windows.Forms.TextBox();
             this.playAgainButton = new System.Windows.Forms.Button();
             this.menuButton = new System.Windows.Forms.Button();
+            this.exit = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // gameTimer
             // 
             this.gameTimer.Enabled = true;
             this.gameTimer.Interval = 20;
-            this.gameTimer.Tick += new System.EventHandler(this.gameTimer_Tick);
+            this.gameTimer.Tick += new System.EventHandler(this.GameTimer_Tick);
             // 
             // playButton
             // 
@@ -58,7 +59,7 @@
             this.playButton.TabIndex = 0;
             this.playButton.Text = "PLAY";
             this.playButton.UseVisualStyleBackColor = false;
-            this.playButton.Click += new System.EventHandler(this.playButton_Click);
+            this.playButton.Click += new System.EventHandler(this.PlayButton_Click);
             this.playButton.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SuperTennis_KeyDown);
             this.playButton.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SuperTennis_KeyUp);
             // 
@@ -97,7 +98,7 @@
             this.playAgainButton.Text = "PLAY\r\nAGAIN";
             this.playAgainButton.UseVisualStyleBackColor = false;
             this.playAgainButton.Visible = false;
-            this.playAgainButton.Click += new System.EventHandler(this.playAgainButton_Click);
+            this.playAgainButton.Click += new System.EventHandler(this.PlayAgainButton_Click);
             // 
             // menuButton
             // 
@@ -115,7 +116,18 @@
             this.menuButton.Text = "MAIN MENU";
             this.menuButton.UseVisualStyleBackColor = false;
             this.menuButton.Visible = false;
-            this.menuButton.Click += new System.EventHandler(this.menuButton_Click);
+            this.menuButton.Click += new System.EventHandler(this.MenuButton_Click);
+            // 
+            // exit
+            // 
+            this.exit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exit.Font = new System.Drawing.Font("Wingdings 2", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.exit.Location = new System.Drawing.Point(754, 9);
+            this.exit.Name = "exit";
+            this.exit.Size = new System.Drawing.Size(34, 28);
+            this.exit.TabIndex = 5;
+            this.exit.Text = "T";
+            this.exit.Click += new System.EventHandler(this.Exit_Click);
             // 
             // SuperTennis
             // 
@@ -123,6 +135,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(800, 520);
+            this.Controls.Add(this.exit);
             this.Controls.Add(this.menuButton);
             this.Controls.Add(this.playAgainButton);
             this.Controls.Add(this.pointsInput);
@@ -151,6 +164,7 @@
         private System.Windows.Forms.TextBox pointsInput;
         private System.Windows.Forms.Button playAgainButton;
         private System.Windows.Forms.Button menuButton;
+        private System.Windows.Forms.Label exit;
     }
 }
 
